@@ -570,19 +570,16 @@ CONT3D(CC_3D>thrCont)   	= 1;            	%continental material
 %% FIND LLSVPs
 %critical variables
 thrPrm                      = 0.5;  %composional threshold for primordial material (0<1) <<<<<<<<<<<<<<<<<<<<<
+%!AG!
+thrBs                       = 0.6;
+thrT                        = 3500;
 %initialising
 LLSVP3D = zeros(size(PRM_3D));
 if strcmp(GRID.Type,'yinyang'); LLSVP3Dyang = LLSVP3D; end
 %start diagnostics
 %LLSVP3D(PRM_3D>thrPrm)   	= 1;            	%llsvp material
 %!AG!
-thrBs                       = 0.5;
-thrT                        = 3333;
 LLSVP3D(BS_3D>thrBs & T_3D>thrT)          = 1;                    %llsvp material
-%!AG! re-define LLSVP's??
-%C_bas > 0.75
-%T_cell > (3000 K + T_CMB)/2 
-% ^ Schierjott et al 2020
 
 %% ACCOUNT FOR PERIODIC BOUNDARIES
 %check for plumes crossing periodic boundaries:
