@@ -9,11 +9,14 @@
 % ( hot plumes are defined by e.g. Tmean+0.5*(Tmax-Tmean) )
 %
 %                                                Fabio Crameri, 23.03.2020
+% 						 Anna Guelcher, 10.10.2021
+% 						 --> diagnostics as explained in 2022 G^3 paper on
+% 						     strain-weakening rehology in Earth's lower mantle
 
 function [MANTLE] = f_DiagnosticsMantle(FILE,GRID,SETUP,SWITCH,PLOT,STYLE)
 %% DEFAULTS
 MD.dummy = [];
-if ~isfield(MD,'plumeDefinition');      	  MD.plumeDefinition            = 1;            end     %1: Solely by temperature, 2: Temperature & radial velocity
+if ~isfield(MD,'plumeDefinition');            MD.plumeDefinition            = 1;            end     %1: Solely by temperature, 2: Temperature & radial velocity
 if ~isfield(MD,'activeUpwellingDefinition')   MD.activeUpwellingDefinition  = 2;            end     %1: Labrosse (2002,EPSL),  2: vz_res*T_res & T_res threshold !AG! 
 if ~isfield(MD,'activeDownwellingDefinition') MD.activeDownwellingDefinition= 2;            end     %1: Labrosse (2002,EPSL),  2: vz_res*T_res & T_res threshold !AG!
 if ~isfield(MD,'plotPLUMES');                 MD.plotPLUMES                 = logical(1); 	end     %plot comparison of all anomalies and selected plumes
@@ -24,8 +27,8 @@ if ~isfield(MD,'upperDepthThresholdHot'); 	  MD.upperDepthThresholdHot 	= 0.7;  
 if ~isfield(MD,'lowerDepthThresholdHot'); 	  MD.lowerDepthThresholdHot 	= 0.8;          end     %lower threshold; fraction of mantle depth (1: bottom, 0: top)
 if ~isfield(MD,'upperDepthThresholdCold');	  MD.upperDepthThresholdCold	= 0.08;         end     %upper threshold; fraction of mantle depth (1: bottom, 0: top)
 if ~isfield(MD,'lowerDepthThresholdCold');	  MD.lowerDepthThresholdCold	= 0.10;     	end     %lower threshold; fraction of mantle depth (1: bottom, 0: top)
-if ~isfield(MD,'dzThresholdHot');             MD.dzThresholdHot             = 0.25;          end     %dz threshold PLUMES !AG!
-if ~isfield(MD,'dzThresholdCold');            MD.dzThresholdCold            = 0.25;         end     %dz threshold SLABS  !AG!
+if ~isfield(MD,'dzThresholdHot');             MD.dzThresholdHot             = 0.25;         end     %dz threshold PLUMES !AG!
+if ~isfield(MD,'dzThresholdCold');            MD.dzThresholdCold            = 0.2;          end     %dz threshold SLABS  !AG!
 if ~isfield(MD,'depthLevelDiagnostics');      MD.depthLevelsMode            = 1;            end     % same (1) or different (2)  UM, MM, LM depth definition for plumes/slabs !AG!
 
 %% DEFAULT OUTPUT FIELDS
@@ -123,9 +126,8 @@ MANTLE.llsvp                    = NaN;          % 1 for llsvp !AG!
 MANTLE.llsvpVolume              = 0;            %[nd] or [m^2]or[m^3] !AG!
 MANTLE.llsvpVolPerc		= 0;            %in [% of total mantle] !AG!
 MANTLE.llsvpCMBPerc             = 0;            %in [% of CMB coverage] !AG!
-%!AG! to do: height of piles
 MANTLE.llsvpLocationX        	= NaN;    	%[plotting dim]
-MANTLE.llsvpLocationZ           = NaN;      %[plotting dim]
+MANTLE.llsvpLocationZ           = NaN;          %[plotting dim]
 
 MANTLE.llsvpNumberLM            = NaN;    	%num
 MANTLE.llsvpVHmaxLM             = NaN;    	%[plotting dim]
@@ -242,7 +244,6 @@ if DATA.NotFound
 end
 
 %!AG! add basalt, viscosity and viscous strain field, for mantle domain diagnostics
-%!AG! BS_3D
 % basalt
 DATA.Task                   = 'ImportFieldData';
 DATA.Field2Import           = 'Basalt';
@@ -332,7 +333,6 @@ LMdepthP            = depthLevelDiagnosticsP(:,3); %!AG!
 
 
 %extracting data
-%!AG! this is where I can include much more diagnostics for different depth levels
 for idD=1:size(depthLevelDiagnosticsP,2) % loop over UM, MM, LM
     for idP=1:size(depthLevelDiagnosticsP,1) % loop over HOT and COLD definitions %!AG!    
         %horizontal rms values
@@ -420,7 +420,6 @@ else
     horizMaxVZres    	= VAR.maxVZres;
 end
 clearvars VAR
-%!AG! VZres in m/s, convert to cm/yr via SETUP.Vscale?
 
 %% CALCULATE RESIDUAL RADIAL HEAT ADVECTION FIELD
 %!AG! 
@@ -450,10 +449,9 @@ if logical(0)
 end
 
 %% FIND UP- AND DOWNWELLINGS
-% !AG! or define thresholds as percentiles? --> or both?
-thrVZ                           = 1/160 *VZmax;       	%define threshold for up/down welling <<<<<<<<<<<<<<<<<<
-thrVZup                         = 1/160 *VZupmax;       %define threshold for upwelling <<<<<<<<<<<<<<<<<<
-thrVZdown                       = 1/160 *VZdownmax;   	%define threshold for downwelling <<<<<<<<<<<<<<<<<<
+thrVZ                           = 1/100 *VZmax;       	%define threshold for up/down welling <<<<<<<<<<<<<<<<<<
+thrVZup                         = 1/100 *VZupmax;       %define threshold for upwelling <<<<<<<<<<<<<<<<<<
+thrVZdown                       = 1/100 *VZdownmax;   	%define threshold for downwelling <<<<<<<<<<<<<<<<<<
 upWelling                       = zeros(size(VZ_3D));  	%nothing
 downWelling                     = zeros(size(VZ_3D));   %nothing
 upWellingAbsolute             	= zeros(size(VZ_3D));  	%nothing
@@ -487,11 +485,11 @@ thrHot_VZT     = 0;
 thrCold_T      = 0;
 thrCold_VZT    = 0;
 thrHot_VZTp    = 90;       % make into PLOT.VZTperHOT
-thrHot_Tp      = 90;       % make into PLOT.TperHOT
+thrHot_Tp      = 85;       % make into PLOT.TperHOT
 thrCold_VZTp   = 85;       % make into PLOT.VZTperCOLD
-thrCold_Tp     = 92;       % make into PLOT.TperCOLD
-thr_Tres_abs   = 100;                                % CHECK !AG!
-thr_VZTres_abs = 0.01/sec_in_yr * thr_Tres_abs;     % CHECK !AG!
+thrCold_Tp     = 90;       % make into PLOT.TperCOLD
+thr_Tres_abs   = 50;                                % CHECK 
+thr_VZTres_abs = 0.01/sec_in_yr * thr_Tres_abs;     % CHECK 
 w3D = GRID.cellVolume/(sum(GRID.cellVolume(:))*nb); 
 
 if strcmp(GRID.Type,'yinyang'); Plumes3Dyang = Plumes3D; end
@@ -558,29 +556,6 @@ if logical(0)
     colorbar
     axis ij
     figure(1)
-end
-
-%% FIND UP- AND DOWNWELLINGS
-thrVZ                           = 1/100 *VZmax;       	%define threshold for up/down welling <<<<<<<<<<<<<<<<<<
-thrVZup                         = 1/100 *VZupmax;       %define threshold for upwelling <<<<<<<<<<<<<<<<<<
-thrVZdown                       = 1/100 *VZdownmax;   	%define threshold for downwelling <<<<<<<<<<<<<<<<<<
-upWelling                       = zeros(size(VZ_3D));  	%nothing
-downWelling                     = zeros(size(VZ_3D));   %nothing
-upWellingAbsolute             	= zeros(size(VZ_3D));  	%nothing
-downWellingAbsolute            	= zeros(size(VZ_3D));   %nothing
-upWelling(VZ_3D>thrVZup)        = 1;                  	%upwelling (exceeding threshold)
-downWelling(VZ_3D<-thrVZdown)	= 1;                    %downwelling (exceeding threshold)
-upWellingAbsolute(VZ_3D>0)      = 1;                  	%upwelling (absolute)
-downWellingAbsolute(VZ_3D<0)   	= 1;                  	%downwelling (absolute)
-if strcmp(GRID.Type,'yinyang')
-    upWelling_yang                          = zeros(size(VZ_3Dyang)); 	%nothing
-    downWelling_yang                        = zeros(size(VZ_3Dyang)); 	%nothing
-    upWellingAbsolute_yang              	= zeros(size(VZ_3Dyang)); 	%nothing
-    downWellingAbsolute_yang             	= zeros(size(VZ_3Dyang)); 	%nothing
-    upWelling_yang(VZ_3Dyang>thrVZup)      = 1;                        %upwelling (exceeding threshold)
-    downWelling_yang(VZ_3Dyang<-thrVZdown) = 1;                        %downwelling (exceeding threshold)
-    upWellingAbsolute_yang(VZ_3Dyang>0)   	= 1;                        %upwelling (absolute)
-    downWellingAbsolute_yang(VZ_3Dyang<0) 	= 1;                        %downwelling (absolute)
 end
 
 %% FIND Continents
@@ -754,7 +729,6 @@ for ib=1:nb
     end
    
     %% CHECK CONNECTIVITY FOR AREA SIZES
-    %!AG! can you do this direction-dependent?
     CCph            = bwconncomp(Plumes3Dh);     	%HOT PLUMES
     numPixelsPh     = cellfun(@numel,CCph.PixelIdxList);    %number of connected pixels in each connected area
     CCpc            = bwconncomp(Plumes3Dc);     	%COLD PLUMES
@@ -835,14 +809,8 @@ for ib=1:nb
 end
 
 %% DISCRIMINATE BETWEEN ACTIVE UPWELLINGS AND LLSVP'S !AG!
-%whos plumesHot
-%max(plumesHot)
-%disp(size(plumesHot))
-%disp(size(Plumes3D))
 Plumes3D(ones(size(Plumes3D)) & LLSVP3D) = 0;
 plumesHot(ones(size(plumesHot)) & LLSVP3D) = 0;
-%!AG! maybe do this before checking of XX
-
 
 if logical(0)
     figure(3)
@@ -1155,7 +1123,6 @@ if ~strcmp(GRID.Type,'yinyang')
         end
     end
     
-    %!AG! here data arrays can be extended for UM, MM, & LM
     %create hot plume data arrays
     maxNumPlumesHotPerSlice         = max(numPlumesHotSlice(:));
     dummy               = zeros(size(plumesHotSlice,1),size(plumesHotSlice,2))*NaN;
@@ -1181,7 +1148,6 @@ if ~strcmp(GRID.Type,'yinyang')
     end
     clearvars dummy dummyNanoms
     
-    %!AG! here data arrays can be extended, and made for other mantle domains
     %create cold plume data arrays
     maxNumPlumesColdPerSlice         = max(numPlumesColdSlice(:));
     dummy               = zeros(size(plumesColdSlice,1),size(plumesColdSlice,2))*NaN;
@@ -1496,17 +1462,6 @@ if MANTLE.numActDownwelling>0 %slab(s) present
     end
     clearvars dummyTDown dummyTresDown dummyVzDown dummyEtaDown 
 end
-
-% for active/passive up/downwellings: (start with plumes only)
-% check: save seperately for each individual plume/slab (<-- add later! First write it generally)
-% CHECK - mean T, max T, min T 
-% CHECK - mean T_res (horizontal)?
-% CHECK - mean vz, max vz, min vz
-% - mean v_res
-% CHECK - mean vStrain, max vStrain, min vStrain
-% or median??
-% CHECK - mean viscosity, min viscosity, max viscosity
-% - mean stress, min stress, max stress
 
 %% DISPLAY INFORMATION
 disp('   Horizontal Mantle Flow')
