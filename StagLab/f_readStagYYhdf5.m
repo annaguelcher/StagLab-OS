@@ -79,6 +79,10 @@ AvailableFields     = {
 %     'zz-Stress component',      true,       'xxx'
 %     'Topo normal stress',       true,       'xxx'
 %     'Topography',               true,       'xxx'
+     'Potential temperature',     true,       'Potential_Temperature' %!AG!
+     'Viscous strain',            true,       'Viscous_Strain' %!AG!
+     'vs healing rate',           true,       'Vstr_Hrate'     %!AG!
+     'vs weakening rate',         true,       'Vstr_Wrate'     %!AG!
 };
 if max(strcmp(AvailableFields(:,1),Type))==0
     % The file does not exist and we should stop processing data
@@ -101,8 +105,8 @@ nyNode            	= str2double(fileCoordInfo(7:11));
 nzNode            	= str2double(fileCoordInfo(13:17));
 %global grid (for now input, has to be given!)
 nx                  = 1;
-ny                  = 512;
-nz                  = 96;
+ny                  = 1024;
+nz                  = 128;
 % Converting the subdomain grid numbers to global grid numbers does not work yet, 
 % as it depends on the geometrical division of the main domain (# cores, etc.)
 % Also, vertical splitting is not yet implemented in the reading of the 3D data.
@@ -117,17 +121,17 @@ end
 
 %% FIND TIME 
 % target timestep
-iStep               = fnameNumber;    
-TIMEfilename        = ['time_botT.h5'];
-TIMEname            = ['time_botT_',num2str(iStep,'%05d')];
-time                = h5read(TIMEfilename,['/',TIMEname]);
-time                = time(1);
+iStep           = fnameNumber;    
+TIMEfilename    = ['time_botT.h5'];
+TIMEname        = ['time_botT_',num2str(iStep,'%05d')];
+time       	    = h5read(TIMEfilename,['/',TIMEname]);
+time            = time(1);
 
 %% FIND NUMFILES and NUMSTEPS (AG)
-i0File              = 0;    % start number of file 
-i0Node              = 1;    % start number of node
-idxType             = find(strcmp(AvailableFields(:,1),Type));
-TypeLength          = strlength(AvailableFields{idxType,3});
+i0File       	= 0;    % start number of file 
+i0Node          = 1;    % start number of node
+idxType         = find(strcmp(AvailableFields(:,1),Type));
+TypeLength      = strlength(AvailableFields{idxType,3});
 
 % Find # h5 files (varies per model, max. file size and set-up) 
 fileFieldStringInfo1    = dir([AvailableFields{idxType,3},'_*_',num2str(i0Node,'%05d'),'.h5']);      %check for the coordinates files
@@ -136,23 +140,23 @@ fileFieldStringInfo     = fileFieldStringInfo1(end).name;  	% only check last on
 numFiles            	= str2double(fileFieldStringInfo((TypeLength+2):(TypeLength+6)));
 
 % Find # steps written in each file
-VARfilename         = [AvailableFields{idxType,3},'_',num2str(i0File,'%05d'),'_',num2str(i0Node,'%05d'),'.h5'];
-info                = h5info(VARfilename);
-numSteps            = size(info.Datasets,1); %This is how many timesteps are written in this file
+VARfilename     = [AvailableFields{idxType,3},'_',num2str(i0File,'%05d'),'_',num2str(i0Node,'%05d'),'.h5'];
+info            = h5info(VARfilename);
+numSteps        = size(info.Datasets,1); %This is how many timesteps are written in this file
 
 %% FIND FILE 
-nb                  = 1;            % number blocks (for YinYang 2, otherwise 1)
-iNode               = 1;            % start number of node [0,numNodes]
+nb           	= 1;            % number blocks (for YinYang 2, otherwise 1)
+iNode           = 1;            % start number of node [0,numNodes]
 iFile = floor(iStep/numSteps);  % this is the correct file number, still beta for vector data files
 fname               = [AvailableFields{idxType,3},'_',num2str(iFile,'%05d'),'_',num2str(iNode,'%05d')];
 scalardata          = AvailableFields{idxType,2};
 
 %% ERROR CHECK
 if ~exist([fname,'.h5'],'file')
-    file_stem_now 	= pwd;
+    file_stem_now       = pwd;
     cd(startDir);
     for i=1:20
-        DataIn{i}  	= ['The file - ',file_stem_now,filesep,fname,'.h5 - does not exist!'];
+        DataIn{i}    = ['The file - ',file_stem_now,filesep,fname,'.h5 - does not exist!'];
     end
     return
     
@@ -232,7 +236,7 @@ end
 %% RESHAPE DATA 
 % AG Needed when vertical splitting is done
 % only works for 2D y-z geometry for now
-if NumNzNode==2
+if (NumNzNode==2)
     if (nx==1)
         Xfull_new = zeros(nz,ny);
         Yfull_new = zeros(nz,ny);
@@ -249,7 +253,6 @@ if NumNzNode==2
             
             DATAfull_new(1:nzNode,:)     = DATAfull(:,1:ny);
             DATAfull_new(nzNode+1:end,:) = DATAfull(:,ny+1:end);
-
         else
             DATAfullX_new = zeros(nz,ny);
             DATAfullY_new = zeros(nz,ny);
@@ -270,11 +273,11 @@ elseif (NumNzNode==1)
     Yfull_new = Yfull;
     Zfull_new = Zfull;
     if scalardata
-        DATAfull_new = Datafull;
+        DATAfull_new = DATAfull;
     else
-        DATAfullX_new = DatafullX;
-        DATAfullY_new = DatafullY;
-        DATAfullZ_new = DatafullZ;
+        DATAfullX_new = DATAfullX;
+        DATAfullY_new = DATAfullY;
+        DATAfullZ_new = DATAfullZ;
     end    
 end
 
@@ -298,8 +301,10 @@ else
 end
 
 %% DATA ADJUSTMENTS
+
 if strcmp(GType,'spherical2D')
     %Transformation to spherical2D coordinates (x-data needs to be in radians)
+    %!AG! check x-z and y-z options here 
     if nx>1
         hDummy      = atan(abs(Z_3D./X_3D));
         zDummy      = sqrt(X_3D.^2+Z_3D.^2);

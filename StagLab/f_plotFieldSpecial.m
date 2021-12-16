@@ -1158,6 +1158,64 @@ if strcmp(FIELD.name,'Tracers')
     end %zoom loop
 end
 
+%%                                                        PLOT FIELD HISTOGRAM 1.0
+% !AG!
+%                                                Anna Guelcher, 09.04.2021
+% not implemented for 3-D yet...........
+
+if strcmp(FIELD.name,'Histogram') %!AG! TO DO: add this var somewhere
+    %% DEFAULTS
+    PLOT.HISTunsuccessful           = false;            %flag for failed function
+    PLOT.histTotalVolume            = [];
+    PLOT.histDataMinValue           = [];
+    PLOT.histDataMaxValue           = [];
+    PLOT.histDataMeanValue          = [];
+    PLOT.histDataMedianValue        = [];
+    PLOT.histDataStandardDeviation  = [];
+
+    %% COUNT SUBPLOTS
+    PLOT.nrSubplot          = PLOT.nrSubplot+1;
+
+    %% SETUP PLOT
+    % figure...
+    figure(1)
+
+    %subplot layout...
+    SPOS.task = 'createSubplot';
+    [SP,SAVE] = f_DesignLayoutPosition(SPOS,PLOT,SWITCH,SAVE);
+
+    % CURRENT AXIS
+    AXcurrent               = gca; %save current axes handle
+ 
+    disp('histogram in the making..') 
+    %% DIAGNOSE AND PLOT SURFACE VARIATION
+    [PLOT,SAVE] = f_plotHistogram(FIELD_M,FIELD,FILE,GRID,SWITCH,PLOT,STYLE,SETUP,SAVE,MANTLE);
+
+    %% PROBLEM CHECK
+    if PLOT.HISTunsuccessful
+
+        %% CREATE AN EMPTY PLOT
+        PLOT.nrSubplot = PLOT.nrSubplot-1; %undo previous, unsuccessful subplot count
+        [PLOT,SAVE] = f_EmptyPlot(SWITCH,PLOT,GRID,FIELD,STYLE,SAVE);
+        return
+
+    end
+    
+    %% DISPLAY INFORMATION
+    for iHistLocal=1:size(PLOT.histType,2) %!AG!
+        disp(['     ',STYLE.SCHAR.smallBullet,' ',PLOT.histField,' histogram: ',char(PLOT.histType{iHistLocal})])
+        disp(['     ',STYLE.SCHAR.smallBullet,' min/max               = ',num2str(PLOT.histDataMinValue(iHistLocal),4),' ',STYLE.SCHAR.doubleSidedArrow,' ',num2str(PLOT.histDataMaxValue(iHistLocal),4),' ',FIELD_M{strcmp(FIELD_M(:,2),PLOT.histField),4}]);
+        disp(['     ',STYLE.SCHAR.smallBullet,' mean                  = ',num2str(PLOT.histDataMeanValue(iHistLocal),4),' ',FIELD_M{strcmp(FIELD_M(:,2),PLOT.histField),4}]);
+        disp(['     ',STYLE.SCHAR.smallBullet,' median                = ',num2str(PLOT.histDataMedianValue(iHistLocal),4),' ',FIELD_M{strcmp(FIELD_M(:,2),PLOT.histField),4}]);
+        disp(['     ',STYLE.SCHAR.smallBullet,' standard deviation    = ',num2str(PLOT.histDataStandardDeviation(iHistLocal),3),' ',FIELD_M{strcmp(FIELD_M(:,2),PLOT.histField),4}]);   
+    end
+ 
+    %% FUNCTION OUTPUT
+    %indicate axis handle as graph subplot
+    SAVE.GraphPlotHandles       = [SAVE.GraphPlotHandles; AXcurrent];
+    PLOT.cb = NaN;      %this is a flag if no colorbar is used
+end
+
 
 
 %% COLORBAR

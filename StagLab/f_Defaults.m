@@ -312,6 +312,7 @@ function [IN,PLOT,SWITCH,TOPO,STYLE,SAVE] = f_Defaults(SAVE)
     PLOT.Composition            =   logical(0);  SWITCH.TickLabelsComposition = {'Crust','Mantle','Continent','Air','Primordial'};
     PLOT.Density                =   logical(0);
     PLOT.Viscosity              =   logical(0);  IN.eta_log = logical(1);
+    PLOT.PotentialTemperature   =   logical(0);  %!AG!
     
     PLOT.Velocity               =   logical(0);
     PLOT.VelocityX              =   logical(0);
@@ -359,6 +360,11 @@ function [IN,PLOT,SWITCH,TOPO,STYLE,SAVE] = f_Defaults(SAVE)
     PLOT.Melt                   =   logical(0);
     PLOT.AgeSinceLastMelted     =   logical(0);
 
+    % !AG! additional fields:
+    PLOT.ViscousStrain          =   logical(0); % viscous strain field !AG! IN.str_log=logical(0);
+    PLOT.vstrHealRate           =   logical(0); % rheological healing rate
+    PLOT.vstrWeakRate           =   logical(0); % strain-weakening rate
+
     %these are not implemented yet:
     PLOT.DynamicPressure      	=   logical(0); %...
     PLOT.MeltFraction         	=   logical(0); %...
@@ -383,6 +389,7 @@ function [IN,PLOT,SWITCH,TOPO,STYLE,SAVE] = f_Defaults(SAVE)
         PLOT.CustomXAxisMax            	=   55;                     %Maximum to specify x-axis extent
         PLOT.CustomYAxisMin           	=   -10.0;                  %Minimum to specify y-axis extent
         PLOT.CustomYAxisMax           	=   10.0;                   %Maximum to specify y-axis extent
+        SWITCH.smoothCustomPlot         =   logical(0);			%Smoothing option for Ydata in customgraph !AG!
 
     %% SPECIAL PLOTS
     PLOT.ParameterTable      	=   logical(0);     %Plots a table with dynamic parameters
@@ -401,6 +408,18 @@ function [IN,PLOT,SWITCH,TOPO,STYLE,SAVE] = f_Defaults(SAVE)
         PLOT.sfvXmin            =   'auto';         %Automatic ('auto') or manual (number) x-axis limit
         PLOT.sfvXmax            =   'auto';         %Automatic ('auto') or manual (number) x-axis limit
         PLOT.sfvShowOutliers    =   logical(0);     %Adds all upper-bound outliers to the last bar
+        PLOT.Histogram          =   logical(0);     %Histogram plot                                     !AG!
+        PLOT.histType           =   'Field'         % 'fieldLM', 'fieldPlumes', 'fieldSlabs', 'rprof'   !AG!
+        PLOT.histField          =   'Temperature';  %Specify field for histogram plot		        !AG!
+        PLOT.histFieldLog       =   logical(0)      %Plot histogram of log(Field) (viscosity?)          !AG!
+        PLOT.histLogY           =   logical(0)      %SemilogY plotting of histogram                     !AG!
+        PLOT.histNumberBins     =   100;            %Number of bins across the x-axis extent		!AG!
+        PLOT.histAdditions      =   logical(1);     %Indicates mean, median and standard deviation	!AG!
+        PLOT.histXmin           =   'auto';         %Automatic ('auto') or manual (number) x-axis limit	!AG!
+        PLOT.histXmax           =   'auto';         %Automatic ('auto') or manual (number) x-axis limit	!AG!
+        PLOT.histYmin           =   0;              %                                                   !AG!
+        PLOT.histYmax           =   'auto';         %Automatic ('auto') or manual (number) y-axis limit !AG! 
+        PLOT.histShowOutliers   =   logical(0);     %Adds all upper-bound outliers to the last bar	!AG!
 
     %% FIELD PLOT ADDITIONS
     IN.grid_T                   =   logical(0);     %Add grid to fields

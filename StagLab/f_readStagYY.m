@@ -100,7 +100,11 @@ AvailableFields     = {
     'Deformation mechanism',    '_defm',    true,       'xxx'
     'zz-Stress component',      '_nstr',    true,       'xxx'
     'Topo normal stress',       '_nst',     true,       'xxx'
-    'Topography',               '_cs',   	true,       'xxx'
+    'Topography',               '_cs',      true,       'xxx'
+    'Potential temperature',    '_tpot',    true        'Potential_Temperature' %!AG! 
+    'Viscous strain',           '_vstrn'    true,       'Viscous_Strain' %!AG!
+    'vs healing rate',          '_vshea'    true,       'Vstr_Hrate'     %!AG!
+    'vs weakening rate',        '_vswea'    true,       'Vstr_Wrate'     %!AG!
 };
 if max(strcmp(AvailableFields(:,1),Type))==0 %&& max(strcmp(AvailableFields(:,1),Type))==0 %NEEDS TO CHECK FOR FIELD LABEL INSTEAD!!! (IN CASE OF RESIDUAL TEMPERATURE ETC)
     error(['Unknown field: ',Type])

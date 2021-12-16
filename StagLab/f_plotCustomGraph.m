@@ -695,7 +695,20 @@ else
             end
         end
     end
-    
+   
+    %% SMOOTHING OF YDATA 
+    %!AG! 
+    %Using yDataMulti-> gives error!
+    %Moving average scheme for yData
+    if SWITCH.smoothCustomGraph
+       movmean_factor = 7;
+       for idata=1:size(yData,2)
+            yData(:,idata) = smoothdata(yData(:,idata),'movmean',movmean_factor);
+       end
+       clearvars movmean_factor
+    end
+    %TO DO: make dependent on field! 
+ 
     %% ERROR CHECKS
 %     if strcmp(GRID.Type,'spherical2D')
 %         % RE-FLIP DEPTH VECTOR AND ACCOUNT FOR STICKY-AIR LAYER

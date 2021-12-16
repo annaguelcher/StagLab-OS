@@ -12,6 +12,7 @@ if ~isfield(SAVE,'BulletString');     	SAVE.BulletString       	= char(9862);   
 if ~isfield(SAVE,'PointingString');   	SAVE.PointingString       	= char(10551);        	end
 % if ~isfield(SAVE,'overwrite');          SAVE.overwrite              = logical(0);           end
 
+
 %% INPUT
 exitAfterSaving     = logical(0);
 calculatePHI        = logical(0);
