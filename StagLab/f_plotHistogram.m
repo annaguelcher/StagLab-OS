@@ -5,14 +5,9 @@
 %                                 Anna Gülcher, 09.02.2021
 %
 %% NOTES
-% currently just a histogram at a given timestep of e given field 
-% in the future:
-%    - histogram over various timesteps ?
-%    - histogram at given depth level only?
-%    - histograms of specific mantle domains ? 
-% goal: one plot with multiple histograms, different colours, for each mantle domain 
-% use hold on 
-% normalize ??
+% currently just a histogram at a given timestep of a given field 
+% can be mantle domain - dependent! (i.e., plumes, slabs, ..)
+% multiple histograms in one plot possible (for e.g. different mantle domains)
                     
 function [PLOT,SAVE] = f_plotHistogram(FIELD_M,FIELD,FILE,GRID,SWITCH,PLOT,STYLE,SETUP,SAVE,MANTLE)
 %% INPUT
@@ -31,8 +26,6 @@ end
 %'pdf': probability density function estimate
 %               v{i}=c{i}/(N*w{i})
 %               w{i} is widt of bin
-% MARCEL: PDF needed for logarithmic xscale!!
-% what about strain, which is intrinsically logarithmic?
 
 %% READ INPUT DATA 
 if ~strcmp(PLOT.histField,'Velocity')   %Scalar Field Data
@@ -165,7 +158,8 @@ for iHistLocal=1:size(PLOT.histType,2) % allow for multiple histograms for diffe
             Data(:,:,:)         = VAR_3D(MANTLE.llsvp(:,:,1:end)==1);
             totalVolume         = sum(sum(GRID.cellVolume(:)))
             w                   = GRID.cellVolume(MANTLE.llsvp(:,:,1:end)==1)/totalVolume;
-            % !AG! but w is for now only used in the mean 
+            % !AG! but w is for now only used in the mean
+            % TO DO: scale according to volume 
         elseif strcmp(PLOT.histType(iHistLocal), 'nonActive')
             if ~exist('MANTLE','var'); error('Mantle Diagnostics was not successful!'); end
             nonActiveMantle     = ones(size(VAR_3D))-MANTLE.activeDownwelling-MANTLE.activeUpwelling;
@@ -190,8 +184,8 @@ for iHistLocal=1:size(PLOT.histType,2) % allow for multiple histograms for diffe
             clearvars dummy nonActiveMantle
 
         end
-        %% LOG field check
 
+        %% LOG field check
         if PLOT.histFieldLog    
             Data(:,:,:) = log10(Data);
         end
@@ -213,16 +207,12 @@ for iHistLocal=1:size(PLOT.histType,2) % allow for multiple histograms for diffe
         %% DIAGNOSE DATA 
         DataMinValue               = min(Data(:));
         DataMaxValue               = max(Data(:));
-        %no weighting (just for myself to compare):
-        NOWDataMeanValue           = mean(Data(:));
-        NOWDataMedianValue         = median(Data(:));
-        NOWDataStandardDeviation   = std(Data(:));
-        %weighting: this one is used!!
+        %weighting of cells in claculating mean, etc. 
         DataMeanValue              = sum(sum(Data.*w)/sum(w)); 
         DataMedianValue            = f_weightedMedian(Data,w);
         DataStandardDeviation      = std(Data(:),w(:));
 
-        %WEIGHTING here?
+        %WEIGHTING of histogram --> still to do! 
 
         %% PLOTTING
         plotAdditionLegend      = logical(1);
@@ -305,8 +295,6 @@ for iHistLocal=1:size(PLOT.histType,2) % allow for multiple histograms for diffe
         hHist = histogram(Data,[xMin:dBin:xMax-dBin,upperLim],...
             'FaceColor',faceColor,'FaceAlpha',faceAlpha,'EdgeColor',edgeColor,'EdgeAlpha',0.8,'Normalization',normalisation);
         hold on
-        %!AG! check normalisation here, make it dependend on log scale or not?
-        %!AG! how to incoorporate WEIGHTING of the grid cells in th emaking of this histogram!? 
         %constant axis
         if SWITCH.Colorbar(1,2)
             if isnumeric(PLOT.histYmax)
@@ -336,25 +324,13 @@ for iHistLocal=1:size(PLOT.histType,2) % allow for multiple histograms for diffe
             %mean value
             try
                 LineMeanColor = [LineMeanColor,0.8]; %transparency
-                %if PLOT.histLogX
-                %    hMean = semilogx([DataMeanValue,DataMeanValue],yAxisLim,'Color',LineMeanColor,'LineWidth',1.7);
-                %else
-                    hMean = plot([DataMeanValue,DataMeanValue],yAxisLim,'Color',LineMeanColor,'LineWidth',1.7);
-                %end
+                hMean = plot([DataMeanValue,DataMeanValue],yAxisLim,'Color',LineMeanColor,'LineWidth',1.7);
             catch
                 LineMeanColor(1,4) = [];
-                %if PLOT.histLogX
-                %    hMean = semilogx([DataMeanValue,DataMeanValue],yAxisLim,'Color',LineMeanColor,'LineWidth',1.7);
-                %else
-                    hMean = plot([DataMeanValue,DataMeanValue],yAxisLim,'Color',LineMeanColor,'LineWidth',1.7);
-                %end
+                hMean = plot([DataMeanValue,DataMeanValue],yAxisLim,'Color',LineMeanColor,'LineWidth',1.7);
             end
             %median value
-            %if PLOT.histLogX
-            %     hMedian = semilogx([DataMedianValue,DataMedianValue],yAxisLim,'Color',LineMeanColor,'LineWidth',1.7,'LineStyle',':');
-            %else
-                 hMedian = plot([DataMedianValue,DataMedianValue],yAxisLim,'Color',LineMeanColor,'LineWidth',1.7,'LineStyle',':');
-            %end
+            hMedian = plot([DataMedianValue,DataMedianValue],yAxisLim,'Color',LineMeanColor,'LineWidth',1.7,'LineStyle',':');
 
             %put histogram to the top %!AG! somehow only works without X axis inlogscale
             uistack(hHist,'top') 
@@ -504,36 +480,4 @@ end
 
 end
 
-%!AG! shall I use this function below? gotten from the internet... 
-%!AG! but how to plot this!?
-%https://www.mathworks.com/matlabcentral/fileexchange/42493-generate-weighted-histogram
-function [histw histv] = f_histwv(vv, ww, minV, maxV, bins) 
-
-% This function generates a vector of cumulative weights for data
-% histogram. Equal number of bins will be considered using minimum and 
-% maximum values of the data. Weights will be summed in the given bin.
-%
-% Usage: [histw, vinterval] = histwc(vv, ww, nbins)
-%
-% Arguments:
-%       vv    - values as a vector
-%       ww    - weights as a vector
-%       minV  - minimum value 
-%       maxV  - max value 
-%       nbins - number of bins
-%
-% Returns:
-%       histw            - weighted histogram 
-%       histv (optional) - histogram of values
-%       
-%       just a double check 
-wwSum = sum(ww(:));
-ww    = ww / wwSum;
-
-delta   = (maxV-minV)/(bins-1); 
-subs    = round((vv-minV)/delta)+1; 
-
-histv   = accumarray(subs,1,[bins,1]); 
-histw   = accumarray(subs,ww,[bins,1]); 
-end
 
