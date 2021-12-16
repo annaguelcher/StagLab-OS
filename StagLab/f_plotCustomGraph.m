@@ -1,7 +1,7 @@
 
-%%                                                  PLOT CUSTOM GRAPH 4.21
-%    . calls f_DesignColourmap
-%                                                Fabio Crameri, 17.06.2021
+%%                                                   PLOT CUSTOM GRAPH 4.20
+%    . calls f_Colours
+%                                                Fabio Crameri, 01.08.2019
 %
 %% NOTES
 % only implemented for 2-D geometry, yet.
@@ -409,7 +409,295 @@ elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Plate mobility vs. Time')
 %     graphXAxisMin           	=   0;
 %     graphXAxisMax            	=   55;
     graphLineStyle              = '-';          %'o' or '-'
+
+% !AG! =======v=======v=======v=======v=======
+ elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Mantle domain vol vs. Time') %!AG!
+    dataNameX                   = {'Time'};     %e.g., 'Time', see SL_FieldPlot for available fields
+    dataNameY                   = {'Upwelling volume %','Active upwelling volume %', 'Downwelling volume %', 'Active downwelling volume %'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Mantle domain volumes vs. time';           %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 60;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';          %'o' or '-'
+ elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'LLSVP vol vs. Time') %!AG!
+    dataNameX                   = {'Time'};     %e.g., 'Time', see SL_FieldPlot for available fields
+    dataNameY                   = {'LLSVP volume %'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'LLSVP volume vs. time';           %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 5;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';          %'o' or '-'
+ elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'LLSVP CMB % vs. Time') %!AG!
+    dataNameX                   = {'Time'};     %e.g., 'Time', see SL_FieldPlot for available fields
+    dataNameY                   = {'LLSVP CMB coverage %'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'LLSVP CMB coverage vs. time';           %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 100;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';          %'o' or '-'
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Number plumes UM-MM-LM vs. Time') %!A !
+    dataNameX                   = {'Time'};     %e.g., 'Time', see SL_FieldPlot for available fields
+    dataNameY                   = {'Upper-mantle plumes','Mid-mantle plumes','Lower-mantle plumes'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = '# plumes vs. time';           %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 15;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';          %'o' or '-'
     
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Number slabs UM-MM-LM vs. Time')
+    dataNameX                   = {'Time'};     %e.g., 'Time', see SL_FieldPlot for available fields
+    dataNameY                   = {'Upper-mantle slabs','Mid-mantle slabs','Lower-mantle slabs'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = '# slabs vs. time';           %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 10;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';          %'o' or '-'
+
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Number spreading ridges vs. Time')
+    dataNameX                   = {'Time'};     %e.g., 'Time', see SL_FieldPlot for available fields
+    dataNameY                   = {'Number spreading ridges'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = '';           %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+%     graphYAxisMax             = 5;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';          %'o' or '-'
+
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Number subduction zones vs. Time')
+    dataNameX                   = {'Time'};     %e.g., 'Time', see SL_FieldPlot for available fields
+    dataNameY                   = {'Number subduction zones'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = '';           %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 5;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';          %'o' or '-'
+
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Plate boundaries vs. Time')
+    dataNameX                   = {'Time'};     %e.g., 'Time', see SL_FieldPlot for available fields
+    dataNameY                   = {'Number subduction zones','Number spreading ridges'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Plate boundaries';           %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = -2;
+    graphYAxisMax               = 8;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';          %'o' or '-'
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'MeanPlateStress vs. Time')
+    dataNameX                   = {'Time'};     %e.g., 'Time', see SL_FieldPlot for available fields
+    dataNameY                   = {'Mean stress in plates'};      %see SL_FieldPlot for available fields
+    numMin                      = 0;
+    numMax                      = 999; %!AG! why?
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Mean plate stress';          %title
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+     graphYAxisMin             =   0;
+     graphYAxisMax             =   50;
+%     graphYAxisMin             =   0;
+%     graphYAxisMax             =   200;
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Plumes temperature vs. Time')
+    dataNameX                   = {'Time'};     
+    dataNameY                   = {'Plumes T_{max}','Plumes T'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Plumes diagnostics';     %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 1000;
+    graphYAxisMax               = 4000;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';          
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Plumes residual temperature vs. Time')
+    dataNameX                   = {'Time'};     
+    dataNameY                   = {'Plumes Tres_{max}','Plumes Tres'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Plumes diagnostics';     %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 1500;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';           
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Plumes radial velocity vs. Time')
+    dataNameX                   = {'Time'};     
+    dataNameY                   = {'Plumes v_{z,max}','Plumes v_{z}'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Plumes diagnostics';     %title 
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 10;
+%    graphXAxisMin              =   0;
+%    graphXAxisMax              =   55;
+    graphLineStyle              = '-';             
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Plumes viscosity vs. Time') %is in log space!
+    dataNameX                   = {'Time'};     
+    dataNameY                   = {'Plumes eta_{max}','Plumes eta'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Plumes diagnostics';     %title 
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 19;
+    graphYAxisMax               = 25;
+%    graphXAxisMin              =   0;
+%    graphXAxisMax              =   55;
+    graphLineStyle              = '-';                
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Plumes viscous strain vs. Time') %is in log space!
+    dataNameX                   = {'Time'};     
+    dataNameY                   = {'Plumes Vstr_{max}','Plumes Vstr'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Plumes diagnostics';      %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 20;
+%    graphXAxisMin              =   0;
+%    graphXAxisMax              =   55;
+    graphLineStyle              = '-';                
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Slabs temperature vs. Time')
+    dataNameX                   = {'Time'};     
+    dataNameY                   = {'Slabs T_{max}','Slabs T'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Slabs diagnostics';      %title
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 300;
+    graphYAxisMax               = 3000;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';          
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Slabs residual temperature vs. Time')
+    dataNameX                   = {'Time'};     
+    dataNameY                   = {'Slabs Tres_{max}','Slabs Tres'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Slabs diagnostics';      %title 
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = -1500;
+    graphYAxisMax               = 0;
+%     graphXAxisMin             =   0;
+%     graphXAxisMax             =   55;
+    graphLineStyle              = '-';           
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Slabs radial velocity vs. Time')
+    dataNameX                   = {'Time'};     
+    dataNameY                   = {'Slabs v_{z,max}','Slabs v_{z}'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Slabs diagnostics';      %title 
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 10;
+%    graphXAxisMin              =   0;
+%    graphXAxisMax              =   55;
+    graphLineStyle              = '-';             
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Slabs viscosity vs. Time') %is in log space!
+    dataNameX                   = {'Time'};     
+    dataNameY                   = {'Slabs eta_{max}','Slabs eta'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Slabs diagnostics';      %title 
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 20;
+    graphYAxisMax               = 26;
+%    graphXAxisMin              =   0;
+%    graphXAxisMax              =   55;
+    graphLineStyle              = '-';                
+elseif strcmp(PLOT.CustomGraphName(iPlotLocal),'Slabs viscous strain vs. Time') %is in log space!
+    dataNameX                   = {'Time'};     
+    dataNameY                   = {'Slabs Vstr_{max}','Slabs Vstr'};      %see SL_FieldPlot for available fields
+    plotAcceleration            = logical(0);
+    numMin                      = 1;
+    numMax                      = 999;
+    indicateCurrentTime         = logical(1);
+    DESVARIA.fieldName          = 'Slabs diagnostics';      %title 
+    absoluteValues              = logical(0);               %plots only absolute values
+    interpolateRoughGridData    = logical(0);               %applied only for some parameters
+    graphYAxisMin               = 0;
+    graphYAxisMax               = 10;
+%    graphXAxisMin              =   0;
+%    graphXAxisMax              =   55;
+    graphLineStyle              = '-';                
+% !AG! =======^=======^=======^=======^=======
 else
     graphNameFound              = false;
     warning(['PLOT.CustomGraphName = ',PLOT.CustomGraphName{iPlotLocal},' not recognised!'])

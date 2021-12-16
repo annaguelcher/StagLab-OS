@@ -287,6 +287,8 @@ function [IN,PLOT,SWITCH,TOPO,STYLE,SAVE] = f_Defaults(SAVE)
       	SWITCH.savePlumes           =   logical(0);     %Saves plume output
     PLOT.indicateCONTINENTposition  =   logical(0);     %Continent position
     PLOT.indicateLLSVPposition      =   logical(0);     %LLSVP position
+    PLOT.indicateLLSVP              =   logical(0);     %Contour outline of mantle plumes
+        PLOT.llsvpColor             =   '#800080'         
     
     %% PERFORMANCE
     SWITCH.ReduceSize               =   logical(0);   	%Reduces matrix size for faster plotting
