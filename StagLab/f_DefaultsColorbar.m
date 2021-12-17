@@ -15,13 +15,13 @@ if dimensional
     CB.restopo_min  = -7;           CB.restopo_max  = 7;
     CB.Ph_min       = 0;         	CB.Ph_max     	= 2;
     CB.C_min        = 1;            CB.C_max        = 5;
-    CB.T_min        = 300;          CB.T_max        = 2500;
+    CB.T_min        = 800;          CB.T_max        = 2800;
     CB.Tres_min     = -400;         CB.Tres_max     = 400;
     CB.str_max      = 1000;         CB.str_min      = 0;
     CB.nstr_max     = 800;          CB.nstr_min     = -800;
     CB.edot_max     = 1e-14;        CB.edot_min     = 0;
     CB.eta_min      = 10^(18.8);    CB.eta_max      = 10^(27.8);
-    CB.vel_min      = 0;            CB.vel_max      = 10;
+    CB.vel_min      = 0;            CB.vel_max      = 1;
     CB.sfun_min   	= -300;       	CB.sfun_max   	= 300;
     CB.rho_min      = 3200;         CB.rho_max      = 3450;
     CB.P_min        = 0;            CB.P_max        = 140;
@@ -29,6 +29,11 @@ if dimensional
     CB.diss_min     = 0;            CB.diss_max     = 1e-5;
     CB.sfv_min      = 0;            CB.sfv_max      = 1;
     CB.water_min    = 0;            CB.water_max    = 100;
+    CB.Tpot_min     = 400;          CB.Tpot_max     = 2600;     %!AG!
+    CB.vs_min       = 0;            CB.vs_max       = 4;        %!AG!
+    CB.vsH_min      = 1e-16;        CB.vsH_max      = 1e-13;    %!AG!
+    CB.vsW_min      = -1e-15;       CB.vsW_max      = 1e-15;    %!AG!
+    CB.hist_min     = 0;            CB.hist_max     = 1;        %!AG!
 else
     CB.graph_min    = -400;       	CB.graph_max 	= 400;
     CB.topo_min     = -0.05;        CB.topo_max     = 0.05;
@@ -51,6 +56,11 @@ else
     CB.diss_min     = 0;            CB.diss_max     = 1;
     CB.sfv_min      = 0;            CB.sfv_max      = 1;
     CB.water_min    = 0;            CB.water_max    = 1;
+    CB.Tpot_min     = 0;            CB.Tpot_max     = 1;        %!AG!
+    CB.vs_min       = 0;            CB.vs_max       = 5;        %!AG! check non-dimensional?
+    CB.vsH_min      = 1e-16;        CB.vsH_max      = 1e-13;    %!AG! check non-dimensional?
+    CB.vsW_min      = -1e-15;       CB.vsW_max      = 1e-15;    %!AG! check non-dimensional?
+    CB.hist_min     = 0;            CB.hist_max     = 1;        %!AG!
 end
 CB.graph_log 	= false;
 CB.topo_log 	= false;
@@ -73,6 +83,9 @@ CB.geoid_log    = false;
 CB.diss_log     = false;
 CB.sfv_log      = false;
 CB.water_log    = false;
+CB.vs_log       = false; 	%!AG!
+CB.vsH_log      = true; 	%!AG!
+CB.vsW_log      = false;	%!AG!
 
 %% CHECK FOR LOG(10) & ANY INPUT VALUES
 name = {'graph' 'topo' 'dyntopo' 'isotopo' 'restopo' 'Ph' 'C' 'T' 'Tres' 'str' ...

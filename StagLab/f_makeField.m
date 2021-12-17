@@ -1,14 +1,14 @@
 
 %%                                          MAKE CUSTOM FIELD VARIABLE 1.42
-% Regional Residual
-% Horizontal Residual
-% Horizontal-Band Residual
-% Global Residual
+% T Regional Residual
+% T Horizontal Residual
+% T Horizontal-Band Residual
+% T Global Residual
 % Dynamic Pressure
 % Upwelling and downwelling
 % Viscous Dissipation
 %                                                Fabio Crameri, 15.08.2019
-%
+% VZ Horizontal Residual                        Anna Guelcher, 14.01.2021 
 %% NOTES
 % output variable VAR needs to consist of either VAR.var2d or
 % VAR.var3d_yin and VAR.var3d_yang
@@ -542,6 +542,50 @@ elseif strcmp(SWITCH.customFieldTask,'Viscous dissipation')
             dummy(:,:)  = VAR.var2d(:,1,:); VAR.var2d = dummy;
         end
     end
+    
+elseif strcmp(SWITCH.customFieldTask,'VZ Horizontal residual') %!AG! newly added 2021
+    %% PLOT HORIZONTAL RESIDUAL-RADIAL VELOCITY 
+    %initiating
+    VAR.var2d               = zeros(size(GRID.X_3D));
+    meanVZhorizontal       	= VAR.var2d;
+    VAR.meanVZres            = VAR.var2d;
+    VAR.minVZres             = VAR.var2d;
+    VAR.maxVZres             = VAR.var2d;
+    if strcmp(GRID.Type,'yinyang')
+        VAR.var2d_yang      = VAR.var2d;
+        if ~strcmp(FIELD.name,'VZ Horizontal residual') 
+            for iz=1:size(PLOT.VZ_3Dyin,3)
+                meanVZhorizontal(:,:,iz)   	= mean2([PLOT.VZ_3Dyin(:,:,iz);PLOT.VZ_3Dyang(:,:,iz)]);  	%horizontal mean radial velocity
+                VAR.var2d(:,:,iz)           = PLOT.VZ_3Dyin(:,:,iz) - meanVZhorizontal(:,:,iz);      	%horizontal radial velocity
+                VAR.var2d_yang(:,:,iz)      = PLOT.VZ_3Dyang(:,:,iz) - meanVZhorizontal(:,:,iz);      	%horizontal radial velocity
+            end
+            for iz=1:size(PLOT.VZ_3Dyin,3)
+                dummy                       = [VAR.var2d(:,:,iz);VAR.var2d_yang(:,:,iz)];
+                VAR.meanVZres(:,:,iz)      	= mean(dummy(:));           %horizontal mean radial velocity
+                VAR.maxVZres(:,:,iz)      	= max(dummy(:));
+                VAR.minVZres(:,:,iz)        = min(dummy(:));
+            end
+        end
+        
+    else %all other geometries
+        for iz=1:size(PLOT.VZ_3D,3)
+            meanVZhorizontal(:,:,iz) 	= mean2(PLOT.VZ_3D(:,:,iz));	%horizontal mean radial velocity
+            VAR.var2d(:,:,iz)           = PLOT.VZ_3D(:,:,iz) - meanVZhorizontal(:,:,iz);  	%residual radial velocity
+        end
+        for iz=1:size(PLOT.VZ_3D,3)
+            dummy                       = VAR.var2d(:,:,iz);
+            VAR.meanVZres(:,:,iz)        = mean(dummy(:));              %horizontal mean residual temperature
+            VAR.maxVZres(:,:,iz)         = max(dummy(:));
+            VAR.minVZres(:,:,iz)         = min(dummy(:));
+        end   
+        
+        %adjust array size
+        clearvars dummy
+        if strcmp(GRID.Dim,'2-D')
+            dummy(:,:)  = VAR.var2d(:,1,:); VAR.var2d = dummy;
+        end
+    end
+        
 
 end
 

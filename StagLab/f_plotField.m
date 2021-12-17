@@ -1745,6 +1745,48 @@ end
 
 
 %==========================================================================
+%% LLSVP CONTOURS !AG!
+%==========================================================================
+if ~strcmp(GRID.Type,'yinyang') && ~strcmp(GRID.Dim,'3-D')
+    if PLOT.indicateLLSVP % plot tracked LLSVPs 
+        % SETTING UP CORRECT GRID VARIABLES AND SIZES
+        if strcmp(GRID.Type,'Cartesian')
+            x2d_dummy  = x2dp; z2d_dummy = z2dp;
+            if strcmp(GRID.Dim,'2-D')
+                dummy      = zeros(size(MANTLE.llsvp,1),size(MANTLE.llsvp,3)); %adjust matrix size for later contour plot
+                dummy(:,:) = MANTLE.llsvp(:,1,:); llsvp = dummy;
+            end
+        elseif strcmp(GRID.Type,'spherical2D')
+            x2d_dummy = GRID.x2ds; z2d_dummy = GRID.z2ds;
+            if SWITCH.closeAnnulus %add a row to close spherical annulus plot
+                MANTLE.llsvp(end+1,:,:) = MANTLE.llsvp(1,:,:);
+            end
+            llsvp(:,:)  = MANTLE.llsvp(:,1,:);
+        end
+
+        % PLOT ADDITION TO PLOT
+        numLoopsZoom = 1;
+        if isfield(SWITCH,'Magnifier') && SWITCH.Magnifier
+            numLoopsZoom = 2;
+        end
+        for iZoom=1:numLoopsZoom
+            if iZoom==2; axes(haxZ); end
+            if MANTLE.llsvpNumberLM>0
+                hold on
+                h_phot = contour(x2d_dummy,z2d_dummy,llsvp,PLOT.numContours,...
+                    'LineColor',PLOT.llsvpColor,'LineWidth',PLOT.streamWidth);
+            end    
+            hold off
+            if numLoopsZoom==2; axes(AXcurrent); end
+        end
+        if strcmp(GRID.Type,'spherical2D') && SWITCH.closeAnnulus %remove row again
+            MANTLE.llsvp(end,:,:) = []; MANTLE.llsvp(end,:,:) = [];
+        end
+    end
+end
+
+
+%==========================================================================
 %% STREAMFUNCTION
 %==========================================================================
 if (strcmp(FIELD.name,'Temperature') && streamfun_T) || ...

@@ -284,38 +284,47 @@ try
     if PLOT.VelocityX;              nrFields = nrFields+1; fieldString=strcat(fieldString,'-vx');  end
     if PLOT.VelocityZ;              nrFields = nrFields+1; fieldString=strcat(fieldString,'-vz');  end
     if PLOT.Pressure;               nrFields = nrFields+1; fieldString=strcat(fieldString,'-p');  end
-    if PLOT.DynamicPressure;      	nrFields = nrFields+1; fieldString=strcat(fieldString,'-pd');  end
+    if PLOT.DynamicPressure;        nrFields = nrFields+1; fieldString=strcat(fieldString,'-pd');  end
     if PLOT.HeatFlux;               nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-hf'); end
-    if PLOT.MeltFraction;         	nrFields = nrFields+1; fieldString=strcat(fieldString,'-f');  end
-    if PLOT.CrustalThickness;     	nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-cr');  end
-    if PLOT.DeformationMechanism; 	nrFields = nrFields+1; fieldString=strcat(fieldString,'-dlc'); end
+    if PLOT.MeltFraction;           nrFields = nrFields+1; fieldString=strcat(fieldString,'-f');  end
+    if PLOT.CrustalThickness;       nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-cr');  end
+    if PLOT.DeformationMechanism;   nrFields = nrFields+1; fieldString=strcat(fieldString,'-dlc'); end
     if PLOT.Phase;                  nrFields = nrFields+1; fieldString=strcat(fieldString,'-ph');  end
     if PLOT.Primordial;             nrFields = nrFields+1; fieldString=strcat(fieldString,'-prm');  end
     if PLOT.Air;                    nrFields = nrFields+1; fieldString=strcat(fieldString,'-air');  end
-    if PLOT.ContinentalCrust;     	nrFields = nrFields+1; fieldString=strcat(fieldString,'-cc');  end
+    if PLOT.ContinentalCrust;       nrFields = nrFields+1; fieldString=strcat(fieldString,'-cc');  end
     if PLOT.Basalt;                 nrFields = nrFields+1; fieldString=strcat(fieldString,'-bs');  end
     if PLOT.Harzburgite;            nrFields = nrFields+1; fieldString=strcat(fieldString,'-hz');  end
     if PLOT.Water;                  nrFields = nrFields+1; fieldString=strcat(fieldString,'-wtr');  end
     if PLOT.Melt;                   nrFields = nrFields+1; fieldString=strcat(fieldString,'-mlt');  end
     if PLOT.SurfaceAge;             nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-sage');  end
-    if PLOT.AgeSinceLastMelted;  	nrFields = nrFields+1; fieldString=strcat(fieldString,'-age');  end
-    if PLOT.Topography;           	nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-topo');  end
-    if PLOT.TopographySelfGrav;    	nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-topoSF');  end
-    if PLOT.PlateVelocity;       	nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-pvh');  end
-    if PLOT.PlateBaseTopography;   	nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-iltopo');  end
+    if PLOT.AgeSinceLastMelted;     nrFields = nrFields+1; fieldString=strcat(fieldString,'-age');  end
+    % === !AG! 
+    if PLOT.PotentialTemperature;   nrFields = nrFields+1; fieldString=strcat(fieldString,'-tpot');  end
+    if PLOT.ViscousStrain;          nrFields = nrFields+1; fieldString=strcat(fieldString,'-vstr');  end
+    if PLOT.vstrHealRate;           nrFields = nrFields+1; fieldString=strcat(fieldString,'-vsW');  end
+    if PLOT.vstrWeakRate;           nrFields = nrFields+1; fieldString=strcat(fieldString,'-vsH');  end
+    % === !AG!
+    if PLOT.Topography;             nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-topo');  end
+    if PLOT.TopographySelfGrav;     nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-topoSF');  end
+    if PLOT.PlateVelocity;          nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-pvh');  end
+    if PLOT.PlateBaseTopography;    nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-iltopo');  end
     if PLOT.Toroidal;               nrFields = nrFields+1; fieldString=strcat(fieldString,'-to');  end
     if PLOT.Poloidal;               nrFields = nrFields+1; fieldString=strcat(fieldString,'-po');  end
-    if PLOT.Streamfunction;        	nrFields = nrFields+1; fieldString=strcat(fieldString,'-psi');  end
+    if PLOT.Streamfunction;         nrFields = nrFields+1; fieldString=strcat(fieldString,'-psi');  end
     if PLOT.UpDownWelling;          nrFields = nrFields+1; fieldString=strcat(fieldString,'-udwell');  end
     if PLOT.Geoid;                  nrFields = nrFields+1; fieldString=strcat(fieldString,'-g'); end
-    if PLOT.DynamicTopography;   	nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-dtopo'); end
-    if PLOT.IsostaticTopography;  	nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-itopo'); end
-    if PLOT.ResidualTopography;    	nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-rtopo'); end
+    if PLOT.DynamicTopography;      nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-dtopo'); end
+    if PLOT.IsostaticTopography;    nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-itopo'); end
+    if PLOT.ResidualTopography;     nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-rtopo'); end
     if PLOT.NormalStress;           nrFields = nrFields+1; fieldString=strcat(fieldString,'-nstr'); end
-    if PLOT.ViscousDissipation;   	nrFields = nrFields+1; fieldString=strcat(fieldString,'-vdiss'); end
+    if PLOT.ViscousDissipation;     nrFields = nrFields+1; fieldString=strcat(fieldString,'-vdiss'); end
     if PLOT.SurfaceFieldVariation;  nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-sfvar'); end
+    %!AG!
+    if PLOT.Histogram;              nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-histvar'); end
+    %!AG!
     if PLOT.PlateSketch;            nrFields = nrFields+1; nrGraphs = nrGraphs+1; fieldString=strcat(fieldString,'-plate'); end
-    if PLOT.ParameterTable;      	nrFields = nrFields+1; fieldString=strcat(fieldString,'-partable'); end
+    if PLOT.ParameterTable;         nrFields = nrFields+1; fieldString=strcat(fieldString,'-partable'); end
     if PLOT.Grid;                   nrFields = nrFields+1; fieldString=strcat(fieldString,'-grid'); end
     if PLOT.Tracers;                nrFields = nrFields+length(PLOT.TracerVariable); fieldString=strcat(fieldString,'-tra'); end
     if PLOT.StreamGraph;            nrFields = nrFields+length(PLOT.StreamGraphParameter); nrGraphs = nrGraphs+length(PLOT.StreamGraphParameter); fieldString=strcat(fieldString,'-sgraph'); end
@@ -584,10 +593,11 @@ try
             return
             
         end
+        FILE.LastFile = false; %AG
         if FILE.number==SAVE.EndNumber %might also be last file as defined by user
             FILE.LastFile       = true;
         end
-        SAVE.LastFile           = FILE.LastFile;
+        SAVE.LastFile           = FILE.LastFile; %!AG! here there is an error when looping
         if SAVE.StartNumber==SAVE.EndNumber; SAVE.LastFile = true; end %only one figure
         PLOT.number             = FILE.number;
         IN.Number(1,loopCase)   = FILE.number;
@@ -607,7 +617,6 @@ try
             clearvars dummy_3D dummy_3Dx
         end
         X_3D = READ.X_3D; Y_3D = READ.Y_3D; Z_3D = READ.Z_3D;
-        
         %% EXTRACT DETAILS OF INPUT FILE
         GRID.aspectDomain = READ.Aspect; %aspect ratio of model-domain (not used yet!)
         %grid size
@@ -1067,26 +1076,43 @@ try
         %SET GRID SPACING
         %dublicate last row for later consistency of array sizes
         if size(GRID.X_3D,1)>1;     GRID.dx = abs(GRID.X_3D(2:end,:,:)-GRID.X_3D(1:end-1,:,:));     GRID.dx(end+1,:,:) = GRID.dx(end,:,:);      else; GRID.dx = 1; end %[m] or [nd]
+        if size(GRID.X_3D,1)>1;     GRID.dx(1,1,:) = GRID.dx(2,1,:); end %!AG!
         if size(GRID.Y_3D,2)>1;     GRID.dy = abs(GRID.Y_3D(:,2:end,:)-GRID.Y_3D(:,1:end-1,:));     GRID.dy(:,end+1,:) = GRID.dy(:,end,:);      else; GRID.dy = 1; end %[m] or [nd]
         if size(GRID.Z_3D,3)>1;     GRID.dz = abs(GRID.Z_3D(:,:,2:end)-GRID.Z_3D(:,:,1:end-1));     GRID.dz(:,:,end+1) = GRID.dz(:,:,end);      else; GRID.dz = 1; end %[m] or [nd]
         if size(GRID.X_3Dp,1)>1;    GRID.dxp = abs(GRID.X_3Dp(2:end,:,:)-GRID.X_3Dp(1:end-1,:,:));  GRID.dxp(end+1,:,:) = GRID.dxp(end,:,:);    else; GRID.dxp = 1; end %[plotting dim]
         if size(GRID.Y_3Dp,2)>1;    GRID.dyp = abs(GRID.Y_3Dp(:,2:end,:)-GRID.Y_3Dp(:,1:end-1,:));  GRID.dyp(:,end+1,:) = GRID.dyp(:,end,:);    else; GRID.dyp = 1; end %[plotting dim]
         if size(GRID.Z_3Dp,3)>1;    GRID.dzp = abs(GRID.Z_3Dp(:,:,2:end)-GRID.Z_3Dp(:,:,1:end-1));  GRID.dzp(:,:,end+1) = GRID.dzp(:,:,end);    else; GRID.dzp = 1; end %[plotting dim]
         if strcmp(GRID.Type,'spherical2D') || strcmp(GRID.Type,'yinyang') %convert degrees to distance (d = theta*r)
-            GRID.dxr    	= GRID.dx;  	%[rad]
-            GRID.dyr     	= GRID.dy;      %[rad]
+            GRID.dxr    	= GRID.dx;  	%[rad] !AG! PHI   -> check
+            GRID.dyr     	= GRID.dy;      %[rad] !AG! THETA -> check
+	    %!AG! volume of cell in 3D spherical geometry:
+	    %     V_{cell} = (r*dtheta) * (r*sin(theta)*dphi) * dr = r^2*sin(theta)*dtheta*dphi*dr.
+            %     for 2D spherical annulus geometry: dphi(=dy) is a constant, and dtheta = out of plane
+            %     you may then set sin(theta)=dtheta=1. 
+            %     for Volume averaging: divide by the sum of all these volumes.   
             if size(GRID.X_3D,1)>1;     GRID.dx = GRID.dx.*GRID.R;      end 	%[m] or [nd]
             if size(GRID.Y_3D,2)>1;     GRID.dy = GRID.dy.*GRID.R;      end   	%[m] or [nd]
             if size(GRID.X_3Dp,1)>1;    GRID.dxp = GRID.dxp.*GRID.Rp;   end     %[plotting dim]
             if size(GRID.Y_3Dp,2)>1;    GRID.dyp = GRID.dyp.*GRID.Rp;   end     %[plotting dim]
         end
-        
+
         %GRID CELL VOLUME
         %last row is dublicated for subsequent consistency with array sizes of fields
         GRID.cellVolume = zeros(size(GRID.X_3D)); GRID.cellVolumeP = GRID.cellVolume;
-        GRID.cellVolume         = GRID.dx .* GRID.dy .* GRID.dz;        %vector [m] or [nd]
-        GRID.cellVolumeP        = GRID.dxp .* GRID.dyp .* GRID.dzp;     %vector [plotting dim]
-        if strcmp(GRID.Dim,'2-D'); GRID.VolDim = [GRID.Zdim,'^2']; else; GRID.VolDim = [GRID.Zdim,'^3']; end
+        if strcmp(GRID.Type,'spherical2D') %!AG! [m^3]; when printing volume [m^2], divide by GRID.R(X,X,X). 
+            GRID.cellVolume         = GRID.R .* GRID.dx .* GRID.dz;         %!AG! sin(theta) = theta = 1 !check: z-y field ?
+            GRID.cellVolumeP        = GRID.Rp .* GRID.dxp .* GRID.dzp; 
+        elseif strcmp(GRID.Type,'yinyang') %!AG! [m^3]; GRID.Y_3D = theta? check!
+            GRID.cellVolume         = sin(GRID.Y_3D).* GRID.dy .* GRID.dx .* GRID.dz;  
+            GRID.cellVolumeP        = sin(GRID.Y_3Dp).* GRID.dyp .* GRID.dxp .* GRID.dzp; 	
+        else %cartesian geometry 
+            GRID.cellVolume        = GRID.dx .* GRID.dy .* GRID.dz;         %vector [m] or [nd]
+            GRID.cellVolumeP       = GRID.dxp .* GRID.dyp .* GRID.dzp;      %vector [plotting dim]
+        end 
+        %disp(sum(sum(GRID.cellVolume(:,1,:))))
+        %disp(sum(sum(GRID.cellVolume./GRID.R)))	
+ 	if strcmp(GRID.Dim,'2-D'); GRID.VolDim = [GRID.Zdim,'^2']; else; GRID.VolDim = [GRID.Zdim,'^3']; end
+        if strcmp(GRID.Type,'spherical2D'); GRID.VolDim = [GRID.Zdim,'^3']; end %!AG! 2D spherical volume in [m^3]
         if strcmp(GRID.Zdim,'nd'); GRID.VolDim = 'nd'; end
         %grid cell output
         GRID.spacing = 'uniform'; %dummy
@@ -1202,20 +1228,20 @@ try
             PLOT.Phase                	'Phase'                   	'Ph'                ''                  1                   'tokyo'       	'flip'   	CB.Ph_min       CB.Ph_max     	CB.Ph_log     	0               1           'tokyo'   	'noflip'    'field'
             PLOT.Composition            'Composition'               'C'                 ''                  1                   'davos'         'noflip'   	CB.C_min        CB.C_max     	CB.C_log    	0               0           'davos'    	'noflip'   	'field'
             PLOT.Air                    'Air'                       'C_{air}'         	SETUP.CompDim     	SETUP.Compscale    	'oslo'         	'flip'   	0               100           	false           0               0           'oslo'     	'noflip'    'field'
-            PLOT.Basalt                 'Basalt'                    'C_{bs}'         	SETUP.CompDim     	SETUP.Compscale    	'oslo'       	'flip'      0               100            	false           0               0           'oslo'     	'noflip'    'field'
+            PLOT.Basalt                 'Basalt'                    'C_{bs}'         	SETUP.CompDim     	SETUP.Compscale    	'davos'       	'flip'      0               100            	false           0               0           'oslo'     	'noflip'    'field'
             PLOT.Harzburgite            'Harzburgite'               'C_{hz}'         	SETUP.CompDim    	SETUP.Compscale  	'oslo'        	'flip'      0               100          	false           0               0           'oslo'    	'noflip'    'field'
             PLOT.ContinentalCrust      	'Cont. crust'               'C_{cc}'         	SETUP.CompDim     	SETUP.Compscale    	'oslo'       	'flip'      0               100         	false           0               0           'oslo'     	'noflip'    'field'
             PLOT.Primordial             'Primordial'                'C_{prim}'         	SETUP.CompDim    	SETUP.Compscale   	'oslo'       	'flip'      0               100          	false           0               0           'oslo'     	'noflip'    'field'
             PLOT.Water                  'Water'                     'C_{wtr}'         	SETUP.CompDim     	SETUP.Compscale    	'oslo'         	'flip'      CB.water_min  	CB.water_max  	CB.water_log  	0               0           'oslo'     	'noflip'    'field'
-            PLOT.Melt                   'Melt'                      'C_{mlt}'         	''                  1                   'bilbao'       	'noflip'	0               1               false           0               0           'turku'    	'noflip'    'field'
-            PLOT.AgeSinceLastMelted   	'Age since melted'         	'a_{solid}'        	PLOT.time2plotDim  	PLOT.timeConvert 	'devon'         'flip'      0               10              false           0               0           'devon'   	'noflip'    'field'
-            PLOT.Temperature            'Temperature'               'T'                 SETUP.TDim        	SETUP.Tscale        'lajolla'       'flip'      CB.T_min        CB.T_max        CB.T_log        0               0           'lajolla'	'flip'      'field'
+            PLOT.Melt                   'Melt'                      'C_{mlt}'         	''                  1                   'devon'       	'noflip'	0               1               false           0               0           'turku'    	'noflip'    'field'
+            PLOT.AgeSinceLastMelted   	'Age since melted'         	'a_{solid}'        	PLOT.time2plotDim  	PLOT.timeConvert 	'devon'         'noflip'      0               5              false           0               0           'devon'   	'noflip'    'field'
+            PLOT.Temperature            'Temperature'               'T'                 SETUP.TDim        	SETUP.Tscale        'anna1'       'noflip'      400        3600        CB.T_log        0               0           'lajolla'	'flip'      'field'
             PLOT.RegionalResidualT      'Regional residual'         'T_{res,R}'       	SETUP.TDim       	SETUP.Tscale      	'vik'           'noflip'    CB.Tres_min     CB.Tres_max     CB.Tres_log     1               0           'berlin'   	'noflip'    'field'
             PLOT.HorizResidualT         'Horizontal residual'       'T_{res,H}'       	SETUP.TDim       	SETUP.Tscale      	'vik'           'noflip'    CB.Tres_min     CB.Tres_max     CB.Tres_log     1               0           'berlin'  	'noflip'    'field'
             PLOT.HorizBandResidualT     'Horizontal-band residual' 	'T_{res,H}'       	SETUP.TDim       	SETUP.Tscale      	'vik'           'noflip'    CB.Tres_min     CB.Tres_max     CB.Tres_log     1               0           'berlin'   	'noflip'    'field'
             PLOT.GlobalResidualT        'Global residual'           'T_{res,G}'       	SETUP.TDim       	SETUP.Tscale      	'vik'           'noflip'    CB.Tres_min     CB.Tres_max     CB.Tres_log     1               0           'berlin'  	'noflip'    'field'
             PLOT.Density                'Density'                   '\rho'           	SETUP.rhoDim       	SETUP.rhoscale    	'bilbao'    	'noflip'  	CB.rho_min      CB.rho_max      CB.rho_log      0               0           'turku'    	'flip'      'field'
-            PLOT.Viscosity              'Viscosity'                 '\eta'              SETUP.etaDim      	SETUP.etascale     	'davos'         'noflip'  	CB.eta_min    	CB.eta_max      CB.eta_log      0               0           'davos'  	'noflip'    'field'
+            PLOT.Viscosity              'Viscosity'                 '\eta'              SETUP.etaDim      	SETUP.etascale     	'lapaz'         'noflip'  	18    	26      CB.eta_log      0               0           'davos'  	'noflip'    'field'
             PLOT.Stress                 'Stress'                    '\sigma'            SETUP.stressDim   	SETUP.stressscale 	'acton'        	'flip'  	CB.str_min     	CB.str_max    	CB.str_log      0               0           'acton'   	'noflip'    'field'
             PLOT.StressX                'Horizontal princ. stress'	'\sigma_x'         	SETUP.stressDim   	SETUP.stressscale 	'acton'     	'flip'  	CB.str_min   	CB.str_max    	CB.str_log      0               0           'acton'   	'noflip'    'field'
             PLOT.StressZ                'Radial princ. stress'    	'\sigma_z'        	SETUP.stressDim   	SETUP.stressscale 	'acton'       	'flip'  	CB.str_min   	CB.str_max    	CB.str_log      0               0           'acton'    	'noflip'    'field'
@@ -1233,6 +1259,15 @@ try
             PLOT.ViscousDissipation    	'Viscous dissipation'       '\phi_{vd}'         SETUP.dissDim       SETUP.dissscale     'bilbao'        'noflip'   	CB.diss_min   	CB.diss_max   	CB.diss_log   	0               0           'turku'   	'noflip'    'field'
             PLOT.UpDownWelling          'Upwelling and downwelling'	'-'                 ''                  1                   'cork'       	'noflip'    -2              2               false           1               1           'tofino' 	'noflip'    'field'
             PLOT.SurfaceFieldVariation 	'Surface field variation' 	'-'                 GRID.Zdim           GRID.dimFactor      'grayC'         'noflip'	CB.sfv_min      CB.sfv_max  	CB.sfv_log     	0               0           'grayC'   	'flip'      'graph'
+	    % ==== !AG! new fields from StagYY
+            PLOT.PotentialTemperature   'Potential temperature'        'T_{pot}'                 SETUP.TDim              SETUP.Tscale        'lajolla'       'flip'      CB.Tpot_min        CB.Tpot_max        CB.T_log        0               0           'lajolla'   'flip'      'field'
+            PLOT.ViscousStrain          'Viscous strain'            '\epsilon_{vs}'     ''                  1                   'vik'        'noflip'    0       4       CB.vs_log       0               0           'davos'     'noflip'    'field'
+            PLOT.vstrHealRate           'vs healing rate'               'H'             's^{-1}'            1                   'devon'         'noflip'    CB.vsH_min      CB.vsH_max      CB.vsH_log      0               0           'oslo'      'noflip'    'field'
+            PLOT.vstrWeakRate           'vs weakening rate'             'W'             's^{-1}'            1                   'broc'          'noflip'    CB.vsW_min      CB.vsW_max      CB.vsW_log      0               0           'vik'       'noflip'    'field'
+            % ==== !AG! Field histogram:
+            PLOT.Histogram              'Histogram'           '-'                 GRID.Zdim           GRID.dimFactor      'grayC'         'noflip'    CB.hist_min      CB.hist_max      false         0               0           'grayC'     'flip'      'graph'
+            % ==== !AG!            
+% ==== !AG! 
             };
         
         %% UNICODE VARIABLES
@@ -1512,7 +1547,7 @@ try
                     if strcmp(FIELD.name,'Stream graph');   dummy = length(PLOT.StreamGraphParameter); end
                     for iPlotLocal=1:dummy %allow for multiple plots
                         if strcmp(GRID.Type,'yinyang'); error('FieldSpecial is not yet implemented for YinYang grid.'); end
-                        [PLOT,SAVE] = f_plotFieldSpecial(iPlotLocal,FIELD_M,FIELD,FILE,GRID,SETUP,SWITCH,PLOT,STYLE,SAVE,PLATE);
+                        [PLOT,SAVE] = f_plotFieldSpecial(iPlotLocal,FIELD_M,FIELD,FILE,GRID,SETUP,SWITCH,PLOT,STYLE,SAVE,PLATE,MANTLE);
                         PLOT.loopPlot = PLOT.loopPlot+1; %track no. of PLOTS plots per file
                     end
                     if isfield(PLOT,'TraData'); PLOT = rmfield(PLOT,'TraData'); end
